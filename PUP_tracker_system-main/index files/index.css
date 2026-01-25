@@ -1,0 +1,94 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.bg-image {
+  background: url('../assets/PUPT\ picture.jpg') no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.bg-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1;
+}
+
+.content {
+  z-index: 2;
+  position: relative;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.276);
+  border-radius: 16px;
+  padding: 50px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); 
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  color: white;
+}
+
+.glass-card img.logo {
+  max-width: 200px;
+  margin-bottom: 15px;
+}
+
+.glass-card h2 {
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 40px;
+}
+
+.btn-custom {
+  font-size: 1.2rem;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.btn-student {
+  background-color: #0fb304;
+  color: white;
+}
+
+.btn-admin {
+  background-color: #800000;
+  color: white;
+}
+
+.btn-security {
+  background-color: #800000;
+  color: white;
+}
+
+.btn-student:hover {
+  background-color: #42dc37;
+}
+
+.btn-admin:hover {
+  background-color: #a00000;
+}
+
+.btn-security:hover {
+  background-color: #a00000;
+}
+
+@media (max-width: 576px) {
+  .glass-card {
+    padding: 25px 20px;
+  }
+
+  .btn-custom {
+    font-size: 1rem;
+  }
+}

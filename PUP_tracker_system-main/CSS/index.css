@@ -1,0 +1,143 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-image: url("../assets/PUPT picture.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.login-panel {
+  width: 50%;
+  max-width: 450px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.logo {
+  width: 80px;
+  margin-bottom: 20px;
+}
+
+.login-panel h2 {
+  font-size: 1.5em;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.login-panel p {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.login-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 15px;
+  margin: 8px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.student-btn {
+  background-color: #15b507;
+}
+
+.admin-btn,
+.security-btn {
+  background-color: #d90801;
+}
+
+.terms {
+  position: absolute;
+  bottom: 20px;
+  font-size: 0.8em;
+}
+
+.terms a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .login-panel {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container::before {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  .login-panel {
+    background-color: transparent;
+    color: white;
+  }
+
+  .login-panel h2,
+  .login-panel p {
+    color: white;
+  }
+
+  .terms a {
+    color: #8cbaff;
+  }
+
+  .login-buttons {
+    width: 80%;
+  }
+}

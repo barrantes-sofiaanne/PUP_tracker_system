@@ -1,0 +1,57 @@
+/* --- Student Handbook (merged) --- */
+.search-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 0;
+  gap: 8px;
+  width: 100%;
+}
+
+.search-wrapper input {
+  padding: 10px;
+  width: 70%;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+}
+
+.search-wrapper button {
+  padding: 10px 15px;
+  background-color: #AF1414;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.search-wrapper button:hover {
+  background-color: #c30000;
+}
+
+#handbookViolationList {
+  list-style-type: decimal;
+  padding-left: 1rem;
+  line-height: 1.6;
+  margin-top: 10px;
+}
+
+#handbookViolationList li {
+  background: #ffe6e6;
+  color: #AF1414;
+  padding: 8px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.violation-link {
+  text-decoration: none;
+  color: #b00020;
+  font-weight: bold;
+  display: block;
+  transition: 0.2s ease;
+}
+
+.violation-link:hover {
+  color: #ff4a4a;
+  text-decoration: underline;
+}

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Sanction List</title>
+    <link rel="stylesheet" href="../CSS/admin_sanction_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+
+        <div class="logo">
+            <img src="../assets/PUPlogo.png" alt="PUP Logo">
+        </div>
+        <nav>
+            <a href="../HTML/admin_homepage.html">Home</a>
+            <a href="../updated-admin-violation/admin_violation_page.php">Violations</a>
+            <a href="../HTML/admin_sanction.html" class="active">Student Sanction</a>
+            <a href="../user-management/user_management.php">User Management</a>
+        </nav>
+        <div class="admin-icons">
+            <a href="notification.html" class="notification">
+                <img src="https://img.icons8.com/?size=100&id=83193&format=png&color=000000" alt="Notifications"/></a>
+            <a href="../PHP/admin_account.php" class="admin">
+                <img src="https://img.icons8.com/?size=100&id=77883&format=png&color=000000" alt="Admin Account"/></a>
+        </div>
+    </header>
+    <div class="container">
+        <h2>Student Sanction List</h2>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="sanction-request"><i class="fas fa-user-graduate"></i> Sanction Request</button>
+            <button class="tab" data-tab="sanction-config"><i class="fas fa-cogs"></i> Sanction Configuration</button>
+        </div>
+
+        <div id="sanction-request-content" class="tab-content active">
+            <div class="controls">
+                <div class="main-controls-wrapper">
+                    <div class="left-control-group">
+                        <form id="filter-form" method="GET" action="">
+                            <select id="violation-type-filter" name="violation_type">
+                                <option value="">All Violation Types</option>
+                                <option value="Hair Color">Hair Color</option>
+                                <option value="Late ID Validation">Late ID Validation</option>
+                                <option value="Late Registration Card">Late Registration Card</option>
+                                <option value="Lost ID">Lost ID</option>
+                                <option value="Lost Registration Card">Lost Registration Card</option>
+                                <option value="Prohibited Clothes">Prohibited Clothes</option>
+                                <option value="Other Violation">Other Violation</option>
+                            </select>
+                            <div class="search-field-group">
+                                <input type="text" placeholder="Search by Student Number" name="search_student_number">
+                                <button type="submit" class="button search-button"><i class="fas fa-search"></i> Search</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="right-control-group">
+                        <button class="button refresh-button"><i class="fas fa-sync-alt"></i> Refresh List</button>
+                    </div>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student Number</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Violation Count</th>
+                        <th>Offense Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2022-00191-TG-0</td>
+                        <td>Donatos</td>
+                        <td>Andrea</td>
+                        <td>Maligaya</td>
+                        <td>2</td>
+                        <td class="status-badge status-pending">Pending</td>
+                    </tr>
+                    <tr>
+                        <td>2022-00191-TG-0</td>
+                        <td>Norona</td>
+                        <td>Mary Nicole</td>
+                        <td>Perillo</td>
+                        <td>3</td>
+                        <td class="status-badge status-completed">Completed</td>
+                    </tr>
+                    <tr>
+                        <td>2022-00191-TG-0</td>
+                        <td>Tayoto</td>
+                        <td>Mikaella</td>
+                        <td>Antonette</td>
+                        <td>1</td>
+                        <td class="status-badge status-warning">Warning</td>
+                    </tr>
+                    <tr>
+                        <td>2022-00191-TG-0</td>
+                        <td>Barrantes</td>
+                        <td>Sofia</td>
+                        <td>Ann</td>
+                        <td>1</td>
+                        <td class="status-badge status-warning">Warning</td>
+                    </tr>
+                    <tr>
+                        <td>2022-00191-TG-0</td>
+                        <td>Malapad</td>
+                        <td>Melchor</td>
+                        <td>James</td>
+                        <td>1</td>
+                        <td class="status-badge status-warning">Warning</td>
+                    </tr>
+                    <tr>
+                        <td>2022-00191-TG-0</td>
+                        <td>Cerbas</td>
+                        <td>John Green</td>
+                        <td>M.</td>
+                        <td>1</td>
+                        <td class="status-badge status-warning">Warning</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="sanction-config-content" class="tab-content">
+            <p>Content for Sanction Configuration will go here.</p>
+            </div>
+
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Deactivate all tabs and hide all tab contents
+                    tabs.forEach(item => item.classList.remove('active'));
+                    tabContents.forEach(item => item.classList.remove('active'));
+
+                    // Activate the clicked tab and show its corresponding content
+                    tab.classList.add('active');
+                    const targetTabContent = document.getElementById(tab.dataset.tab + '-content');
+                    if (targetTabContent) {
+                        targetTabContent.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

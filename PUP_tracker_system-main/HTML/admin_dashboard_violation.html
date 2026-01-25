@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Sanction List</title>
+    <link rel="stylesheet" href="../CSS/admin_dashboard_violation.css">
+</head>
+<body>
+          <!-- Navbar -->
+          <header>
+             <div class="logo">
+                 <img src="../assets/PUPlogo.png" alt="PUP Logo">
+             </div>
+             <nav>
+                 <a href="../HTML/admin_homepage.html">Home</a>
+                 <a href="../HTML/admin_violation.html">Violations</a>
+                 <a href="../HTML/admin_sanction.html">Student Sanction</a>
+                 <a href="../user-management/user_management.php">User Management</a>
+             </nav>
+             <div class="admin-icons">
+                 <a href="notification.html" class="notification">
+                     <img src="https://img.icons8.com/?size=100&id=83193&format=png&color=000000"/></a>
+                 <a href="admin_account.html" class="admin">
+                    <img src="https://img.icons8.com/?size=100&id=77883&format=png&color=000000"/></a>
+             </div>
+         </header>
+     
+         <!-- Search Bar -->
+         <div class="search-bar">
+             <input type="text" placeholder="Search">
+         </div>
+    <main>
+        <select class="violation-link" onchange="location = this.value;">
+            <option disabled selected>Violations</option>
+            <option value="../HTML/admin_dashboard_violation.html">Add Violation</option>
+            <option value="../HTML/violation_record.html">Violation Record</option>
+        </select>
+        <h1>Violation List</h1>
+        <div class="grid-container">
+            <a href="../PHP/late_validation.php" class="grid-item"><img src="https://img.icons8.com/ios/50/id-verified.png"/>Late ID Validation</a>
+            <a href="../PHP/late_regicard.php" class="grid-item"><img src="https://img.icons8.com/?size=100&id=23387&format=png&color=000000"/>Late Registration Card</a>
+            <a href="../HTML/admin_violation.html" class="grid-item"><img src="https://img.icons8.com/?size=100&id=qXjGlQCP9Xl1&format=png&color=000000"/>Lost Registration Card</a>
+            <a href="../HTML/admin_violation.html" class="grid-item"><img src="https://img.icons8.com/ios/50/id-not-verified.png"/>Lost ID</a>
+            <a href="../HTML/admin_violation.html" class="grid-item"><img src="https://img.icons8.com/?size=100&id=RVrC6AREilus&format=png&color=000000"/>Hair Color</a>
+            <a href="../PHP/no_id.php" class="grid-item"><img src="https://img.icons8.com/?size=100&id=18754&format=png&color=000000"/>No ID</a>
+            <a href="../HTML/admin_violation.html" class="grid-item"><img src="https://img.icons8.com/ios/50/t-shirt.png"/>Prohibited Clothing</a>
+            <a href="../HTML/admin_violation.html" class="grid-item"><img src="https://img.icons8.com/ios/50/more.png"/>Other Violations</a>
+        </div>
+    </main>
+    <script src="#"></script>
+</body>
+</html>

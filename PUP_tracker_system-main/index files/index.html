@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PUP Tracker | Login</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="./index.css" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="bg-image">
+    <div class="bg-overlay"></div>
+
+    <div class="content d-flex justify-content-center align-items-center h-100">
+      <div class="glass-card text-center">
+        <img src="../IMAGE/Trackers_logo.png" alt="Sysrem logo" class="logo" />
+        <h2> Choose your log in Account</h2>
+        <div class="d-grid gap-3">
+    <!--      <button class="btn btn-student btn-custom" id="student-btn" onclick="selectRole('student')">Student</button>
+          <button class="btn btn-admin btn-custom" id="admin-btn" onclick="selectRole('admin')">Admin</button> -->
+
+          <a href="./student-page/student_login.php" class="btn btn-student btn-custom">Student</a>
+          <a href="./admin-login/admin_login.php" class="btn btn-admin btn-custom">Admin</a>
+          <a href="./PHP/security_login.php" class="btn btn-security btn-custom">Security Personnel</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="./index.js"></script>
+</body>
+</html>

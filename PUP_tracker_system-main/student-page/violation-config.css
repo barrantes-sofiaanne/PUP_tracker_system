@@ -1,0 +1,41 @@
+.accordion-header {
+  background: maroon;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-content {
+  display: none;
+  padding: 10px;
+  background: #f9f9f9;
+}
+
+.accordion-item.active .accordion-content {
+  display: block;
+}
+
+.search-bar {
+  padding: 10px;
+  text-align: center;
+}
+
+.search-bar input {
+  padding: 5px;
+  width: 250px;
+}
+
+.search-bar button {
+  padding: 5px 10px;
+  background: maroon;
+  color: white;
+  border: none;
+  cursor: pointer;
+}

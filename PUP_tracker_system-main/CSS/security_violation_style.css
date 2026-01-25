@@ -1,0 +1,130 @@
+/* Reset Default Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Navbar */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 10px 20px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo img {
+    width: 50px;
+    margin-left: 70px;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+
+nav a:hover {
+    color: #AF1414;
+}
+
+/* icon images */
+.admin-icons {
+    display: flex;
+    gap: 15px;
+    font-size: 15px;
+    margin-right: 55px;
+}
+
+.admin-icons img {
+    width: 35px;
+}
+
+.notification {
+    width: 34px;
+}
+
+/* Student Sanction List */
+.container {
+    width: 90%;
+    margin: auto;
+}
+
+h1 {
+    font-size: larger;
+    color: #3f3f3f;
+}
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #b00000;
+    color: white;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+td {
+    background-color: #d3d3d3;
+}
+
+.buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.add-btn {
+    background-color: green;
+    color: white;
+}
+
+.edit-btn {
+    background-color: yellow;
+    color: black;
+}
+
+.delete-btn {
+    background-color: red;
+    color: white;
+}
+

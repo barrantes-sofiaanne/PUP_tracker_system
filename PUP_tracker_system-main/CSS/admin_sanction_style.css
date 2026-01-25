@@ -1,0 +1,436 @@
+/* Reset Default Styles & Root Variables */
+:root {
+    --primary-color: #af1414; /* PUP Red */
+    --primary-hover-color: #bd2727;
+    --secondary-color: #0056b3; /* A shade of blue for actions/links */
+    --secondary-hover-color: #004085;
+    --light-gray-border: #ccc;
+    --medium-gray-border: #ddd;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Slightly more modern font */
+    --card-bg-color: #fdfdfd;
+    --card-border-color: #eaeaea;
+    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --table-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 10px 30px; /* Adjusted padding */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo img {
+    width: 50px;
+    margin-left: 40px; /* Adjusted margin */
+}
+
+nav {
+    display: flex;
+    gap: 25px; /* Adjusted gap */
+    flex-grow: 1;
+    justify-content: center;
+}
+
+nav a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+nav a:hover,
+nav a.active {
+    color: var(--primary-color);
+}
+nav a.active {
+    border-bottom: 2px solid var(--primary-color);
+}
+
+/* Admin Icons */
+.admin-icons {
+    display: flex;
+    gap: 20px; /* Adjusted gap */
+    margin-right: 40px; /* Adjusted margin */
+}
+
+.admin-icons img {
+    width: 30px; /* Adjusted size */
+    height: 30px;
+}
+
+/* Main Content Container */
+.container {
+    background: white;
+    padding: 25px 30px; /* Adjusted padding */
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin: 25px auto; /* Centered with auto margins and adjusted top/bottom */
+    width: 95%;
+    max-width: 1600px; /* Added max-width */
+}
+
+.container h2 {
+    font-size: 1.8em; /* Adjusted font size */
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: left;
+}
+
+/* Tabs for Sanction Request/Configuration */
+.tabs {
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--medium-gray-border);
+    display: flex;
+    gap: 0;
+}
+
+.tab {
+    background: none;
+    border: none;
+    padding: 12px 18px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    color: #555;
+    margin-bottom: -1px; /* Overlap border */
+    transition: color 0.3s ease, border-color 0.3s ease;
+    display: inline-flex; /* To align icon and text */
+    align-items: center;
+    gap: 8px; /* Space between icon and text */
+}
+
+.tab.active {
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.tab:hover {
+    color: var(--primary-color);
+}
+
+/* Tab content for dynamic switching */
+.tab-content {
+    display: none; /* Hide by default */
+    padding-top: 20px; /* Space after tabs */
+}
+
+.tab-content.active {
+    display: block; /* Show active tab content */
+}
+
+/* Controls (Filters and Search) */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: var(--card-bg-color);
+    border-radius: 8px;
+    border: 1px solid var(--card-border-color);
+    box-shadow: var(--card-shadow);
+}
+
+.main-controls-wrapper {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.left-control-group {
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+#filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+}
+
+#filter-form select {
+    padding: 0 10px;
+    font-size: 0.9em;
+    border-radius: 5px;
+    border: 1px solid var(--light-gray-border);
+    height: 36px;
+    min-width: 140px;
+    flex-basis: 150px;
+    flex-grow: 0;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+#filter-form select:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.1rem rgba(0, 86, 179, 0.25);
+}
+
+.search-field-group {
+    display: flex;
+    align-items: center;
+    flex-grow: 1; /* Allow search to grow */
+    flex-basis: 400px; /* Suggested base width */
+    min-width: 280px; /* Minimum width before wrapping */
+}
+
+.search-field-group input[type="text"] {
+    padding: 0 10px;
+    font-size: 0.9em;
+    border: 1px solid var(--light-gray-border);
+    border-right: none;
+    border-radius: 5px 0 0 5px;
+    height: 36px;
+    flex-grow: 1;
+    min-width: 200px; /* Minimum width for input field */
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.search-field-group input[type="text"]:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.1rem rgba(0, 86, 179, 0.25);
+}
+
+.search-field-group input::placeholder {
+    font-size: 1em;
+    opacity: 0.7;
+}
+
+.button { /* General button style, applied via class now */
+    padding: 0 15px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    line-height: 1;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-weight: normal;
+}
+
+.button i {
+    margin-right: 8px;
+}
+
+.search-button {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 0 5px 5px 0;
+    flex-shrink: 0;
+}
+.search-button:hover {
+    background-color: var(--primary-hover-color);
+}
+
+.right-control-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.refresh-button {
+    background-color: #fff;
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+}
+.refresh-button:hover {
+    background-color: #e6f0ff;
+    color: var(--secondary-hover-color);
+    border-color: var(--secondary-hover-color);
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    table-layout: fixed;
+    box-shadow: var(--table-shadow);
+    border-radius: 8px;
+    overflow: hidden; /* Ensures rounded corners clip table content */
+}
+
+table th,
+table td {
+    border-bottom: 1px solid var(--medium-gray-border);
+    text-align: left;
+    font-size: 0.82em;
+    word-wrap: break-word; /* Ensure text wraps */
+    overflow-wrap: break-word;
+}
+
+table thead th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+    padding: 12px 10px;
+}
+
+table tbody td {
+    padding: 10px 10px;
+}
+
+table tbody tr {
+    transition: background-color 0.2s ease-in-out,
+                border-left-color 0.2s ease-in-out;
+    border-left: 3px solid transparent; /* For hover effect */
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f8f9fa; /* Zebra striping */
+}
+
+table tbody tr:hover {
+    background-color: #e6eefc; /* Light blue on hover */
+    border-left-color: var(--secondary-color); /* Highlight with secondary color on hover */
+}
+
+/* Column Widths (Adjusted for new columns) */
+table th:nth-child(1) { /* Student Number */
+    width: 15%;
+}
+table th:nth-child(2) { /* Last Name */
+    width: 15%;
+}
+table th:nth-child(3) { /* First Name */
+    width: 15%;
+}
+table th:nth-child(4) { /* Middle Name */
+    width: 15%;
+}
+table th:nth-child(5) { /* Violation Count */
+    width: 10%;
+    text-align: center;
+}
+table th:nth-child(6) { /* Offense Status */
+    width: 15%;
+    text-align: center;
+}
+
+table td:nth-child(5), /* Violation Count */
+table td:nth-child(6) { /* Offense Status */
+    text-align: center;
+}
+
+/* Status Styling (now using status-badge base) */
+.status-badge {
+    padding: 3px 7px;
+    border-radius: 12px; /* Pill shape */
+    font-size: 0.75em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block; /* Allows padding and alignment */
+    color: white; /* Default text color */
+}
+
+/* Specific status colors */
+.status-pending {
+    background-color: #ffc107; /* Bootstrap 'warning' yellow/orange */
+    color: #343a40; /* Dark text for contrast */
+}
+
+.status-completed {
+    background-color: #28a745; /* Bootstrap 'success' green */
+    color: white;
+}
+
+.status-warning { /* Re-using existing warning color */
+    background-color: #dc3545; /* Bootstrap 'danger' red */
+    color: white;
+}
+
+/* Responsive considerations */
+@media (max-width: 992px) {
+    .main-controls-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .left-control-group,
+    .right-control-group {
+        width: 100%;
+        justify-content: center; /* Center buttons/filters in column layout */
+    }
+    #filter-form {
+        justify-content: center;
+    }
+    .search-field-group {
+        width: 100%;
+        min-width: unset; /* Allow full width */
+    }
+    #filter-form select {
+        width: 100%;
+        min-width: unset;
+        flex-basis: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 10px 15px;
+    }
+    .logo, .admin-icons {
+        margin: 0;
+        width: 100%;
+        justify-content: center;
+    }
+    nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 10px;
+        gap: 10px;
+    }
+    .container {
+        margin: 15px auto;
+        padding: 15px;
+    }
+    .tabs {
+        flex-wrap: wrap;
+    }
+    .tab {
+        flex: 1 1 auto;
+        justify-content: center;
+        padding: 10px 12px;
+    }
+    table th, table td {
+        font-size: 0.75em;
+        padding: 8px 5px;
+    }
+    /* Hide some columns on very small screens if necessary for readability */
+    table th:nth-child(4), /* Middle Name */
+    table td:nth-child(4) {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    table th:nth-child(1), /* Student Number */
+    table td:nth-child(1) {
+        display: none;
+    }
+}
