@@ -7,7 +7,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-// Reusing the email body function from the admin script
 function createPasswordResetEmailBody($recipientName, $resetLink, $userType = 'user') {
     $emailSubject = ($userType === 'security' ? 'Security' : '') . ' Password Reset';
     $accountType = ($userType === 'security' ? 'security' : '') . ' account';
@@ -90,7 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 $mail->Subject = 'Security Password Reset Request - PUPT Tracker System';
                                 $mail->Body    = createPasswordResetEmailBody($security_first_name, $reset_link, 'security');
                                 $mail->send();
-                                $message = "If a security account exists for " . htmlspecialchars($security_email) . ", a reset link has been sent.";
+                                
+                                $message = "A reset link has been sent to " . htmlspecialchars($security_email);
                                 $message_type = "success";
                             } catch (Exception $e) {
                                 $message = "Account found, but email could not be sent. Contact support.";
@@ -100,8 +100,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $update_stmt->close();
                     }
                 } else {
-                    $message = "If a security account exists for " . htmlspecialchars($security_email) . ", a reset link has been sent.";
-                    $message_type = "success";
+                    $message = "We could not find a security account with that email address.";
+                    $message_type = "error";
                 }
                 $stmt->close();
             }
@@ -116,33 +116,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Security - Request Password Reset</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./security_login_style.css">
-    <style>
-        .right-panel form p.message { padding: 10px; margin-bottom: 15px; border-radius: 5px; text-align: center; }
-        .right-panel form p.message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .right-panel form p.message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="left-panel">
-            <h2>Security Password</h2>
-            <p>Enter your security email address to receive a password reset link.</p>
+    <div class="login-container <?php echo (!empty($message)) ? 'no-anim' : ''; ?>">
+        
+        <img src="../assets/PUP_logo.png" alt="PUP Logo" class="logo">
+
+        <div class="welcome-panel">
+            <h2>Forgot Password?</h2>
+            <p>Enter your security email to receive a reset link.</p>
         </div>
-        <div class="right-panel">
-            <img src="../assets/PUP_logo.png" alt="PUP Logo" class="logo">
-            <h3>Reset Security Password</h3>
+
+        <div class="login-form-wrapper">
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                
                 <?php if (!empty($message)): ?>
                     <p class="message <?php echo $message_type; ?>"><?php echo $message; ?></p>
                 <?php endif; ?>
+
                 <div class="input-group">
                     <input type="email" name="email" placeholder="Your Security Email Address" required value="<?php echo isset($security_email) ? htmlspecialchars($security_email) : ''; ?>">
                 </div>
-                <button type="submit" class="login-btn">Send Password Reset Link</button>
-                <p style="text-align: center; margin-top: 20px;">
-                    <a href="security_login.php" style="color: #8a1c1c; text-decoration: none;">Back to Login</a>
-                </p>
+                
+                <button type="submit" class="login-btn">Send Reset Link</button>
+                
+                <div class="form-footer" style="justify-content: center;">
+                    <a href="security_login.php" class="back-link">Back to Security Login</a>
+                </div>
             </form>
         </div>
     </div>

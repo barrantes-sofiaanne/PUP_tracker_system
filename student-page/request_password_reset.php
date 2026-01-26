@@ -99,26 +99,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 $mail->AltBody = "Hello " . htmlspecialchars($user_first_name) . ",\n\nYou requested a password reset. Please copy and paste this link into your browser: " . $reset_link . "\n\nThis link expires in one hour.";
                                 
                                 $mail->send();
-                                $message = "If an account is associated with " . htmlspecialchars($email_or_student_number) . ", a password reset link has been sent to the registered email address.";
+                                $message = "A reset link has been sent to " . htmlspecialchars($user_email);
                                 $message_type = "success";
 
                             } catch (Exception $e) {
                                 error_log("Mailer Error for password reset {$user_email}: " . $mail->ErrorInfo);
-                                $message = "We found your account, but could not send the reset email. Please try again later or contact support.";
+                                $message = "We found your account, but could not send the reset email. Please try again later.";
                                 $message_type = "error";
                             }
                         } else {
-                            $message = "Error updating your account for password reset. Please try again.";
+                            $message = "Error updating your account for password reset.";
                             $message_type = "error";
                         }
                         $update_stmt->close();
                     } else {
-                        $message = "Database error preparing for password reset. Please try again.";
+                        $message = "Database error preparing for password reset.";
                         $message_type = "error";
                     }
                 } else {
-                    $message = "If an account is associated with " . htmlspecialchars($email_or_student_number) . ", a password reset link has been sent to the registered email address.";
-                    $message_type = "success";
+                    $message = "We could not find a student account with that Student Number or Email.";
+                    $message_type = "error";
                 }
                 $stmt->close();
             } else {
@@ -144,15 +144,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="./student_login_style.css"> 
 </head>
 <body>
-    <div class="login-container">
+    <div class="login-container <?php echo (!empty($message)) ? 'no-anim' : ''; ?>">
+        
+        <img src="../assets/PUP_logo.png" alt="PUP Logo" class="logo">
+
         <div class="welcome-panel">
-            <img src="../assets/PUP_logo.png" alt="PUP Logo" class="logo">
-            <h2>Forgot Your Password?</h2>
-            <p>No problem. Enter your details and we'll help you reset it.</p>
+            <h2>Forgot Password?</h2>
+            <p>Enter your details and we'll send you a reset link.</p>
         </div>
+
         <div class="login-form-wrapper">
-            <h3>Reset Your Password</h3>
-            
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
                 <?php if (!empty($message)): ?>
                     <p class="message <?php echo $message_type; ?>"><?php echo $message; ?></p>
@@ -163,7 +164,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 
                 <button type="submit" class="login-btn">Send Reset Link</button>
-                <div class="options-container">
+                
+                <div class="form-footer" style="justify-content: center;">
                     <a href="student_login.php" class="back-link">Back to Login</a>
                 </div>
             </form>
