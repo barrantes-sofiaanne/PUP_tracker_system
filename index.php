@@ -15,14 +15,19 @@
             <img src="./assets/PUP_logo.png" alt="Logo" class="logo">
             <h2>PUPTracker Violation System</h2>
             <p>Choose your log in account to continue</p>
+            
             <div class="login-buttons">
                 <a href="./student-page/student_login.php" class="login-btn student-btn">Student</a>
                 <a href="./admin-login/admin_login.php" class="login-btn admin-btn">Admin</a>
                 <a href="./security-page/security_login.php" class="login-btn security-btn">Security Personnel</a>
             </div>
+
             <div class="terms">
-                <a href="#">Privacy Terms and Condition</a>
+                <a href="https://www.pup.edu.ph/privacy/" target="_blank">Privacy Statement</a>
+                <span style="color: #999; margin: 0 5px;">|</span>
+                <a href="https://www.pup.edu.ph/terms/" target="_blank">Terms of Use</a>
             </div>
+            
         </div>
     </div>
 </body>

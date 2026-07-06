@@ -160,26 +160,27 @@ if ($conn && ($_SERVER["REQUEST_METHOD"] != "POST" || !empty($message_type) && $
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Reset Your Password</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./admin_login_style.css">
-    <style>
-        .right-panel form p.message { padding: 10px; margin-bottom: 15px; border-radius: 5px; text-align: center; }
-        .right-panel form p.message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .right-panel form p.message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="left-panel">
-            <h2>Set New Admin Password</h2>
+    <div class="login-container">
+        
+        <img src="../assets/PUP_logo.png" alt="PUP Logo" class="logo">
+
+        <div class="welcome-panel">
+            <h2>Set New Password</h2>
             <?php if ($token_valid && $_SERVER["REQUEST_METHOD"] != "POST" && empty($message)): ?>
-            <p>Please enter your new password below.</p>
+                <p>Please enter your new admin password below.</p>
             <?php elseif (!$token_valid && empty($message_type) && empty($message)): ?>
-            <p>Invalid or expired link. Please request a new password reset.</p>
+                <p>Invalid or expired link. Please request a new password reset.</p>
             <?php endif; ?>
         </div>
-        <div class="right-panel">
-            <img src="../assets/PUP_logo.png" alt="PUP Logo" class="logo">
-            <h3>Create New Admin Password</h3>
+
+        <div class="login-form-wrapper">
+            
             <?php if (!empty($message)): ?>
                 <p class="message <?php echo $message_type; ?>"><?php echo $message; ?></p>
             <?php endif; ?>
@@ -192,12 +193,15 @@ if ($conn && ($_SERVER["REQUEST_METHOD"] != "POST" || !empty($message_type) && $
                 <div class="input-group">
                     <input type="password" name="confirm_password" placeholder="Confirm New Password" required>
                 </div>
+                
                 <button type="submit" class="login-btn">Reset Password</button>
             </form>
             <?php endif; ?>
-            <p style="text-align: center; margin-top: 20px;">
-                <a href="admin_login.php" style="color: #8a1c1c; text-decoration: none;">Back to Admin Login</a>
-            </p>
+
+            <div class="form-footer" style="justify-content: center;">
+                <a href="admin_login.php" class="back-link">Back to Admin Login</a>
+            </div>
+
         </div>
     </div>
 </body>

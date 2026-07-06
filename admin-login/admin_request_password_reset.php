@@ -99,8 +99,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 $mail->AltBody = "Hello " . htmlspecialchars($admin_first_name) . ",\n\nA password reset was requested for your admin account. Please visit the following link to reset your password: " . $reset_link . "\n\nThis link will expire in 1 hour. If you did not request this, please ignore this email.\n\nRegards,\nSystem Administration";
                                 
                                 $mail->send();
-                                $message = "If an admin account exists for " . htmlspecialchars($admin_email) . ", a reset link has been sent.";
+                                $message = "A reset link has been sent to " . htmlspecialchars($admin_email);
                                 $message_type = "success";
+
                             } catch (Exception $e) {
                                 error_log("Mailer Error for admin password reset {$admin_email}: " . $mail->ErrorInfo);
                                 $message = "Account found, but email could not be sent. Contact support.";
@@ -118,8 +119,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         error_log("DB Prepare Error (update_sql) in admin_request_password_reset.php: " . $conn->error);
                     }
                 } else {
-                    $message = "If an admin account exists for " . htmlspecialchars($admin_email) . ", a reset link has been sent.";
-                    $message_type = "success";
+                    $message = "We could not find an admin account with that email address.";
+                    $message_type = "error";
                 }
                 $stmt->close();
             } else {
@@ -138,33 +139,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Request Password Reset</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./admin_login_style.css">
-    <style>
-        .right-panel form p.message { padding: 10px; margin-bottom: 15px; border-radius: 5px; text-align: center; }
-        .right-panel form p.message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .right-panel form p.message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="left-panel">
-            <h2>Admin Password</h2>
-            <p>Enter your admin email address to receive a password reset link.</p>
+    <div class="login-container <?php echo (!empty($message)) ? 'no-anim' : ''; ?>">
+        
+        <img src="../assets/PUP_logo.png" alt="PUP Logo" class="logo">
+
+        <div class="welcome-panel">
+            <h2>Forgot Password?</h2>
+            <p>Enter your admin email to receive a reset link.</p>
         </div>
-        <div class="right-panel">
-            <img src="../assets/PUP_logo.png" alt="PUP Logo" class="logo">
-            <h3>Reset Admin Password</h3>
+
+        <div class="login-form-wrapper">
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                
                 <?php if (!empty($message)): ?>
                     <p class="message <?php echo $message_type; ?>"><?php echo $message; ?></p>
                 <?php endif; ?>
+
                 <div class="input-group">
                     <input type="email" name="email" placeholder="Your Admin Email Address" required value="<?php echo isset($admin_email) ? htmlspecialchars($admin_email) : ''; ?>">
                 </div>
-                <button type="submit" class="login-btn">Send Password Reset Link</button>
-                <p style="text-align: center; margin-top: 20px;">
-                    <a href="admin_login.php" style="color: #8a1c1c; text-decoration: none;">Back to Admin Login</a>
-                </p>
+                
+                <button type="submit" class="login-btn">Send Reset Link</button>
+                
+                <div class="form-footer" style="justify-content: center;">
+                    <a href="admin_login.php" class="back-link">Back to Admin Login</a>
+                </div>
             </form>
         </div>
     </div>
