@@ -73,11 +73,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
                         $_SESSION['admin_lockout_time'] = time() + $lockout_duration;
                         $errors['login_error'] = "Too many failed attempts. Please wait.";
                     } else {
-                        $errors['login_error'] = "Incorrect password! $remaining attempts left.";
+                        $errors['login_error'] = "Incorrect email or password! Please try again. $remaining attempts left.";
                     }
                 }
             } else {
-                $errors['login_error'] = "We could not find an admin account with that email.";
+                $errors['login_error'] = "Incorrect email or password! Please try again.";
             }
             $stmt->close();
         }

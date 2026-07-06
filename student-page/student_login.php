@@ -67,11 +67,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $errors['login_error'] = "Too many failed attempts. Please wait $lockout_duration seconds.";
                         } else {
                             $attempts_left = $max_attempts - $_SESSION['login_attempts'];
-                            $errors['login_error'] = "Incorrect password! You have $attempts_left attempt(s) left.";
+                            $errors['login_error'] = "Incorrect student number or password! Please try again. You have $attempts_left attempt(s) left.";
                         }
                     }
                 } else {
-                    $errors['login_error'] = "We could not find a student with that number.";
+                    $errors['login_error'] = "Incorrect student number or password! Please try again.";
                 }
                 $stmt->close();
             } else {

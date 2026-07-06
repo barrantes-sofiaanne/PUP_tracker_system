@@ -75,11 +75,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
                         $errors['login_error'] = "Too many failed attempts. Please wait $lockout_duration seconds.";
                     } else {
                         $attempts_left = $max_attempts - $_SESSION['sec_login_attempts'];
-                        $errors['login_error'] = "Incorrect password! You have $attempts_left attempt(s) left.";
+                        $errors['login_error'] = "Incorrect email or password! Please try again. You have $attempts_left attempt(s) left.";
                     }
                 }
             } else {
-                $errors['login_error'] = "We could not find a security account with that email.";
+                $errors['login_error'] = "Incorrect email or password! Please try again.";
             }
             $stmt->close();
         }
