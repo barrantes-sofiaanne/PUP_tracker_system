@@ -5,71 +5,85 @@ include '../PHP/dbcon.php';
 $errors = [];
 $email_display = "";
 
+$max_attempts = 3;
+$lockout_duration = 60;
+
 if (isset($_SESSION['security_password_reset_success'])) {
     $success_message = $_SESSION['security_password_reset_success'];
     unset($_SESSION['security_password_reset_success']);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
+    
+    if (isset($_SESSION['sec_lockout_time'])) {
+        $time_left = $_SESSION['sec_lockout_time'] - time();
+        if ($time_left > 0) {
+            $errors['login_error'] = "Too many failed attempts. Please wait " . $time_left . " seconds.";
+        } else {
+            unset($_SESSION['sec_lockout_time']);
+            $_SESSION['sec_login_attempts'] = 0;
+        }
+    }
+
     if (isset($_POST['email'])) {
         $email_display = htmlspecialchars($_POST['email']);
     }
 
     $email_for_query = trim($_POST['email']);
-    $password_posted = $_POST['password'];
+    $password = $_POST['password'];
 
     if (empty($email_for_query)) {
-        $errors['email_input'] = "Email Address is required!";
-    } elseif (!filter_var($email_for_query, FILTER_VALIDATE_EMAIL)) {
-        $errors['email_input'] = "Invalid email format!";
+        $errors['email'] = "Email is required!";
     }
-    
-    if (empty($password_posted)) {
-        $errors['password_input'] = "Password is required!";
+    if (empty($password)) {
+        $errors['password'] = "Password is required!";
     }
 
     if (empty($errors)) {
-        if (!$conn) {
-            $errors['db_error'] = "Database connection failed.";
-        } else {
-            $query = "SELECT s.id, s.email, s.password, si.firstname 
-                      FROM security s 
-                      LEFT JOIN security_info si ON s.id = si.security_id 
-                      WHERE s.email = ?";
-            
-            if ($stmt = $conn->prepare($query)) {
-                $stmt->bind_param("s", $email_for_query);
-                $stmt->execute();
-                $result = $stmt->get_result();
+        $sql = "SELECT s.id AS security_id, s.email, s.password, si.Firstname AS first_name, si.status_id
+                FROM security s 
+                LEFT JOIN security_info si ON s.id = si.security_id
+                WHERE s.email = ?";
+                
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("s", $email_for_query);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-                if ($result->num_rows == 1) {
-                    $security_account = $result->fetch_assoc();
-                    
-                    if (password_verify($password_posted, $security_account['password'])) {
-                        $_SESSION['security_id'] = $security_account['id'];
-                        $_SESSION['security_email'] = $security_account['email'];
-                        $_SESSION['security_first_name'] = $security_account['firstname'];
-                        
-                        $stmt->close();
-                        $conn->close();
-                        header("Location: ../security-page/security_dashboard.php");
-                        exit;
+            if ($result->num_rows == 1) {
+                $user = $result->fetch_assoc();
+                
+                if (password_verify($password, $user["password"])) {
+                    if ($user['status_id'] == 1) {
+                        $_SESSION['sec_login_attempts'] = 0;
+                        unset($_SESSION['sec_lockout_time']);
+
+                        session_regenerate_id(true);
+                        $_SESSION["security_id"] = $user["security_id"];
+                        $_SESSION["security_first_name"] = $user["first_name"];
+                        $_SESSION["security_email"] = $user["email"];
+                        header("Location: security_dashboard.php");
+                        exit();
                     } else {
-                        $errors['login_error'] = "Incorrect password! Please try again.";
+                        $errors['login_error'] = "Your account has been deactivated.";
                     }
                 } else {
-                    $errors['login_error'] = "We could not find a security account with that email.";
+                    $_SESSION['sec_login_attempts'] = ($_SESSION['sec_login_attempts'] ?? 0) + 1;
+
+                    if ($_SESSION['sec_login_attempts'] >= $max_attempts) {
+                        $_SESSION['sec_lockout_time'] = time() + $lockout_duration;
+                        $errors['login_error'] = "Too many failed attempts. Please wait $lockout_duration seconds.";
+                    } else {
+                        $attempts_left = $max_attempts - $_SESSION['sec_login_attempts'];
+                        $errors['login_error'] = "Incorrect password! You have $attempts_left attempt(s) left.";
+                    }
                 }
-                $stmt->close();
             } else {
-                $errors['db_error'] = "Database query preparation failed.";
+                $errors['login_error'] = "We could not find a security account with that email.";
             }
+            $stmt->close();
         }
     }
-}
-
-if ($conn && $conn->ping()) {
-    mysqli_close($conn);
 }
 ?>
 <!DOCTYPE html>

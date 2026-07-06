@@ -5,9 +5,22 @@ session_start();
 $errors = [];
 $studentNumber = $password = "";
 
+$max_attempts = 3;
+$lockout_duration = 60;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $studentNumber = trim($_POST['student_number']);
     $password = $_POST['password'];
+
+    if (isset($_SESSION['lockout_time'])) {
+        $time_left = $_SESSION['lockout_time'] - time();
+        if ($time_left > 0) {
+            $errors['login_error'] = "Too many failed attempts. Please wait " . $time_left . " seconds.";
+        } else {
+            unset($_SESSION['lockout_time']);
+            $_SESSION['login_attempts'] = 0;
+        }
+    }
 
     if (empty($studentNumber)) {
         $errors['student_number'] = "Student number is required!";
@@ -16,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors['password'] = "Password is required!";
     }
 
+    // Only proceed to query the database if there are no errors (including lockout errors)
     if (empty($errors)) {
         if (!$conn) {
             $errors['db_error'] = "Database connection failed. Please try again later or contact support.";
@@ -26,12 +40,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->execute();
                 $result = $stmt->get_result();
 
-                // --- OPTION A: SPECIFIC ERROR MESSAGES ---
                 if ($result->num_rows == 1) {
                     $user = $result->fetch_assoc();
                     
                     if (password_verify($password, $user["password_hash"])) {
                         if ($user['status_id'] == 1) {
+                            
+                            $_SESSION['login_attempts'] = 0;
+                            unset($_SESSION['lockout_time']);
+
                             session_regenerate_id(true);
                             $_SESSION["current_user_id"] = $user["user_id"];
                             $_SESSION["user_first_name"] = $user["first_name"];
@@ -43,7 +60,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $errors['login_error'] = "Your account has been deactivated. Please contact an administrator.";
                         }
                     } else {
-                        $errors['login_error'] = "Incorrect password! Please try again.";
+                        $_SESSION['login_attempts'] = ($_SESSION['login_attempts'] ?? 0) + 1;
+
+                        if ($_SESSION['login_attempts'] >= $max_attempts) {
+                            $_SESSION['lockout_time'] = time() + $lockout_duration;
+                            $errors['login_error'] = "Too many failed attempts. Please wait $lockout_duration seconds.";
+                        } else {
+                            $attempts_left = $max_attempts - $_SESSION['login_attempts'];
+                            $errors['login_error'] = "Incorrect password! You have $attempts_left attempt(s) left.";
+                        }
                     }
                 } else {
                     $errors['login_error'] = "We could not find a student with that number.";

@@ -4,6 +4,8 @@ include '../PHP/dbcon.php';
 
 $errors = [];
 $email_display = "";
+$max_attempts = 3; 
+$lockout_duration = 60;
 
 if (isset($_SESSION['admin_password_reset_success'])) {
     $success_message = $_SESSION['admin_password_reset_success'];
@@ -11,6 +13,17 @@ if (isset($_SESSION['admin_password_reset_success'])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
+    
+    if (isset($_SESSION['admin_lockout_time'])) {
+        $time_left = $_SESSION['admin_lockout_time'] - time();
+        if ($time_left > 0) {
+            $errors['login_error'] = "Too many failed attempts. Please wait " . $time_left . " seconds.";
+        } else {
+            unset($_SESSION['admin_lockout_time']);
+            $_SESSION['admin_login_attempts'] = 0;
+        }
+    }
+
     if (isset($_POST['email'])) {
         $email_display = htmlspecialchars($_POST['email']);
     }
@@ -18,60 +31,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
     $email_for_query = trim(mysqli_real_escape_string($conn, $_POST['email']));
     $password_posted = $_POST['password'];
 
-    if (empty($email_for_query)) {
-        $errors['email_input'] = "Email is required!";
-    }
-    if (empty($password_posted)) {
-        $errors['password_input'] = "Password is required!";
-    }
+    if (empty($email_for_query)) { $errors['email_input'] = "Email is required!"; }
+    if (empty($password_posted)) { $errors['password_input'] = "Password is required!"; }
 
-    if (empty($errors['email_input']) && empty($errors['password_input'])) {
-        if (!$conn) {
-            $errors['db_error'] = "Database connection failed.";
-        } else {
-            $query = "SELECT id, email, password FROM admins WHERE email=?";
-            if ($stmt = $conn->prepare($query)) {
-                $stmt->bind_param("s", $email_for_query);
-                $stmt->execute();
-                $result = $stmt->get_result();
+    if (empty($errors)) {
+        $query = "SELECT id, email, password FROM admins WHERE email=?";
+        
+        if ($stmt = $conn->prepare($query)) {
+            $stmt->bind_param("s", $email_for_query);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-                if ($result->num_rows == 1) {
-                    $admin_account = $result->fetch_assoc();
+            if ($result->num_rows == 1) {
+                $admin_account = $result->fetch_assoc();
+                
+                if (password_verify($password_posted, $admin_account['password'])) {
+                    $_SESSION['admin_login_attempts'] = 0;
+                    unset($_SESSION['admin_lockout_time']);
+
+                    $_SESSION['admin_id'] = $admin_account['id'];
+                    $_SESSION['admin_email'] = $admin_account['email'];
                     
-                    if (password_verify($password_posted, $admin_account['password'])) {
-                        $_SESSION['admin_id'] = $admin_account['id'];
-                        $_SESSION['admin_email'] = $admin_account['email'];
-                        
-                        $info_stmt = $conn->prepare("SELECT firstname FROM admin_info_tbl WHERE admin_id = ?");
-                        if($info_stmt) {
-                            $info_stmt->bind_param("i", $admin_account['id']);
-                            $info_stmt->execute();
-                            $info_result = $info_stmt->get_result();
-                            if($info_user = $info_result->fetch_assoc()){
-                                $_SESSION['admin_first_name'] = $info_user['firstname'];
-                            }
-                            $info_stmt->close();
+                    $info_stmt = $conn->prepare("SELECT firstname FROM admin_info_tbl WHERE admin_id = ?");
+                    if($info_stmt) {
+                        $info_stmt->bind_param("i", $admin_account['id']);
+                        $info_stmt->execute();
+                        $info_result = $info_stmt->get_result();
+                        if($info_user = $info_result->fetch_assoc()){
+                            $_SESSION['admin_first_name'] = $info_user['firstname'];
                         }
-                        
-                        header("Location: ../admin-dashboard/admin_homepage.php");
-                        exit;
-                    } else {
-                        $errors['login_error'] = "Incorrect password! Please try again.";
+                        $info_stmt->close();
                     }
+                    
+                    header("Location: ../admin-dashboard/admin_homepage.php");
+                    exit;
                 } else {
-                    $errors['login_error'] = "We could not find an admin account with that email.";
+                    $_SESSION['admin_login_attempts'] = ($_SESSION['admin_login_attempts'] ?? 0) + 1;
+                    $remaining = $max_attempts - $_SESSION['admin_login_attempts'];
+                    
+                    if ($_SESSION['admin_login_attempts'] >= $max_attempts) {
+                        $_SESSION['admin_lockout_time'] = time() + $lockout_duration;
+                        $errors['login_error'] = "Too many failed attempts. Please wait.";
+                    } else {
+                        $errors['login_error'] = "Incorrect password! $remaining attempts left.";
+                    }
                 }
-                $stmt->close();
             } else {
-                $errors['db_error'] = "Database query preparation failed.";
+                $errors['login_error'] = "We could not find an admin account with that email.";
             }
-            if ($conn) mysqli_close($conn);
+            $stmt->close();
         }
     }
-} elseif ($conn && $_SERVER["REQUEST_METHOD"] != "POST") {
-    mysqli_close($conn);
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
