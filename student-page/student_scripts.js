@@ -380,12 +380,64 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
+    const newPasswordInput = document.getElementById("new_password");
+    const reqList = document.getElementById("password-requirements");
+
+    if (newPasswordInput && reqList) {
+        
+        newPasswordInput.addEventListener("focus", function() {
+            reqList.classList.add("show-reqs");
+        });
+
+        newPasswordInput.addEventListener("blur", function() {
+            if (this.value === "") {
+                reqList.classList.remove("show-reqs");
+            }
+        });
+
+        newPasswordInput.addEventListener("input", function() {
+            const val = this.value;
+
+            const toggleValid = (id, isValid) => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (isValid) {
+                        el.classList.add("valid");
+                    } else {
+                        el.classList.remove("valid");
+                    }
+                }
+            };
+
+            toggleValid("req-length", val.length >= 8);
+            toggleValid("req-upper", /[A-Z]/.test(val));
+            toggleValid("req-lower", /[a-z]/.test(val));
+            toggleValid("req-number", /[0-9]/.test(val));
+            toggleValid("req-special", /[^\w\s]/.test(val));
+        });
+    }
+
     const form = document.getElementById("changePasswordForm");
     const messageDiv = document.getElementById("form-message");
 
     if (form) {
       form.addEventListener("submit", function (e) {
         e.preventDefault();
+
+        const newPassword = document.getElementById("new_password").value;
+        const confirmPassword = document.getElementById("confirm_new_password").value;
+
+        if (newPassword !== confirmPassword) {
+            alert("Your new passwords do not match! Please try again.");
+            return;
+        }
+
+        const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$/;
+        if (!strongRegex.test(newPassword)) {
+            alert("Your password is too weak!\n\nIt must contain:\n- At least 8 characters\n- One uppercase letter\n- One lowercase letter\n- One number\n- One special character (!@#$%^&*)");
+            return;
+        }
+
         messageDiv.style.display = "none";
         messageDiv.textContent = "";
         messageDiv.className = "message";
