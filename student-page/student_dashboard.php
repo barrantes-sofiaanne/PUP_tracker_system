@@ -277,8 +277,11 @@ if (isset($conn)) {
             </div>
         </div>
     </div>
+
 </main>
 
+<link rel="stylesheet" href="./deepseek_chatbot.css">
+<script src="./deepseek_chatbot.js"></script>
 <script src="./student_scripts.js"></script>
 </body>
 </html>

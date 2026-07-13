@@ -605,6 +605,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
+<link rel="stylesheet" href="./deepseek_chatbot.css">
+<script src="./deepseek_chatbot.js"></script>
 <?php if (isset($conn)) { $conn->close(); } ?>
 </body>
 </html>
