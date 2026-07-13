@@ -765,6 +765,7 @@ main {
 .modal-body {
   padding: 25px;
   overflow-y: auto;
+  max-height: 70vh;
 }
 /* Change Password Modal Specific */
 .form-input-group {
@@ -789,6 +790,7 @@ main {
   justify-content: flex-end;
   gap: 10px;
   margin-top: 30px;
+  padding-top: 15px;
 }
 .modal-footer .cancel-btn {
   order: 1;
@@ -1854,27 +1856,20 @@ main {
   }
 }
 
-/* === ENHANCED BUTTON FOR RECORD PAGE (Request Sanction) === */
-
-/* Base style for the specific button in the table */
 .request-sanction-btn-row {
-  /* Use flex to align text and the new icon */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px; /* Space between text and icon */
+  gap: 8px;
 
-  /* Slightly adjusted padding and font size for a better fit in the table */
   padding: 8px 18px;
   font-size: 0.9em;
   font-weight: 600;
 
-  /* Overriding default border and adding a more modern look */
   border: none;
-  border-radius: 6px; /* A slightly softer corner radius */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle initial shadow */
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-  /* Applying a subtle gradient for depth */
   background: linear-gradient(
     180deg,
     var(--pup-maroon),
@@ -1882,47 +1877,73 @@ main {
   );
   color: white;
 
-  /* Smooth transition for all effects */
   transition: all 0.25s ease-in-out;
 }
 
-/* Adding the arrow icon using a ::after pseudo-element */
 .request-sanction-btn-row::after {
   content: "→";
   font-weight: bold;
-  transition: transform 0.2s ease-out; /* Animate the icon's movement */
+  transition: transform 0.2s ease-out;
 }
 
-/* Enhanced hover state for the active button */
 .request-sanction-btn-row:not(:disabled):hover {
-  transform: translateY(-2px); /* Lifts the button */
-  box-shadow: 0 5px 10px rgba(128, 0, 0, 0.25); /* More prominent shadow */
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(128, 0, 0, 0.25);
   background: linear-gradient(
     180deg,
     var(--pup-maroon),
     #500000
-  ); /* Slightly darker on hover */
+  );
 }
 
-/* Animate the icon on hover */
 .request-sanction-btn-row:not(:disabled):hover::after {
   transform: translateX(4px);
 }
 
-/* Styling for the disabled state of the button */
 .request-sanction-btn-row:disabled {
-  /* Use muted colors from your theme for a consistent look */
   background: var(--hover-bg);
   color: var(--secondary-text);
 
-  /* Removing effects to clearly show it's inactive */
   opacity: 0.7;
   box-shadow: none;
   transform: none;
   cursor: not-allowed;
 }
 
-/* Remove the arrow icon when the button is disabled */
 .request-sanction-btn-row:disabled::after {
-  content: ""; /* No icon */
+  content: "";
+}
+
+.password-reqs {
+    list-style-type: none;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    font-size: 0.85em;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: none;
+}
+
+.password-reqs.show-reqs {
+    display: block;
+}
+
+.password-reqs li {
+    color: #d9534f;
+    transition: color 0.2s ease;
+    margin-bottom: 4px;
+}
+
+.password-reqs li::before {
+    content: "✗ ";
+    font-weight: bold;
+}
+
+.password-reqs li.valid {
+    color: #5cb85c;
+}
+
+.password-reqs li.valid::before {
+    content: "✓ ";
 }

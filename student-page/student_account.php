@@ -4,6 +4,32 @@ require_once './student_auth_check.php';
 $session_user_id_for_account = $_SESSION["current_user_id"];
 $student_stud_number_from_session = $_SESSION["user_student_number"];
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $current_password = $_POST['current_password'] ?? '';
+    $new_password = $_POST['new_password'] ?? '';
+    $confirm_password = $_POST['confirm_new_password'] ?? '';
+
+    if ($new_password !== $confirm_password) {
+        echo json_encode([
+            "success" => false,
+            "message" => "New passwords do not match!"
+        ]);
+        exit;
+    }
+
+    $uppercase    = preg_match('@[A-Z]@', $new_password);
+    $lowercase    = preg_match('@[a-z]@', $new_password);
+    $number       = preg_match('@[0-9]@', $new_password);
+    $specialChars = preg_match('@[^\w]@', $new_password);
+
+    if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($new_password) < 8) {
+        echo json_encode([
+            "success" => false,
+            "message" => "Password must be at least 8 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character."
+        ]);
+        exit;
+    }
+}
 
 if (isset($_GET['notif_id']) && is_numeric($_GET['notif_id']) && isset($conn)) {
     $notification_id_to_mark = (int)$_GET['notif_id'];
@@ -23,9 +49,9 @@ $unread_notification_count_header = 0;
 
 if (isset($conn) && !empty($student_stud_number_from_session)) {
     $sql_notifications_list_header = "SELECT notification_id, message, created_at, link 
-                                      FROM notifications_tbl 
-                                      WHERE student_number = ? AND is_read = FALSE 
-                                      ORDER BY created_at DESC LIMIT 5";
+                                        FROM notifications_tbl 
+                                        WHERE student_number = ? AND is_read = FALSE 
+                                        ORDER BY created_at DESC LIMIT 5";
     if ($stmt_notifications_list_header = $conn->prepare($sql_notifications_list_header)) {
         $stmt_notifications_list_header->bind_param("s", $student_stud_number_from_session);
         $stmt_notifications_list_header->execute();
@@ -37,8 +63,8 @@ if (isset($conn) && !empty($student_stud_number_from_session)) {
     }
 
     $sql_notifications_count_header = "SELECT COUNT(*) as total_unread 
-                                       FROM notifications_tbl 
-                                       WHERE student_number = ? AND is_read = FALSE";
+                                        FROM notifications_tbl 
+                                        WHERE student_number = ? AND is_read = FALSE";
     if ($stmt_notifications_count_header = $conn->prepare($sql_notifications_count_header)) {
         $stmt_notifications_count_header->bind_param("s", $student_stud_number_from_session);
         $stmt_notifications_count_header->execute();
@@ -52,10 +78,10 @@ $student_info = null;
 $page_error = null;
 
 $sql_student = "SELECT u.first_name, u.middle_name, u.last_name, u.student_number, u.email,
-                       c.course_name,
-                       s.section_name,
-                       y.year AS year_level,
-                       g.gender_name
+                        c.course_name,
+                        s.section_name,
+                        y.year AS year_level,
+                        g.gender_name
                 FROM users_tbl u
                 LEFT JOIN course_tbl c ON u.course_id = c.course_id
                 LEFT JOIN section_tbl s ON u.section_id = s.section_id
@@ -247,6 +273,14 @@ if (isset($conn)) {
                 <div class="form-input-group">
                     <label for="new_password">New Password</label>
                     <input type="password" id="new_password" name="new_password" required>
+                        <ul id="password-requirements" class="password-reqs">
+                            <li id="req-length" class="invalid">At least 8 characters</li>
+                            <li id="req-upper" class="invalid">One uppercase letter</li>
+                            <li id="req-lower" class="invalid">One lowercase letter</li>
+                            <li id="req-number" class="invalid">One number</li>
+                            <li id="req-special" class="invalid">One special character (e.g., !@#$%^&*)</li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="form-input-group">
                     <label for="confirm_new_password">Confirm New Password</label>

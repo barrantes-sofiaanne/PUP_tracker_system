@@ -32,14 +32,19 @@ if (empty($current_password) || empty($new_password) || empty($confirm_new_passw
     exit;
 }
 
-if (strlen($new_password) < 8) {
-    $response['message'] = 'New password must be at least 8 characters long.';
+if ($new_password !== $confirm_new_password) {
+    $response['message'] = 'New passwords do not match.';
     echo json_encode($response);
     exit;
 }
 
-if ($new_password !== $confirm_new_password) {
-    $response['message'] = 'New passwords do not match.';
+$uppercase    = preg_match('@[A-Z]@', $new_password);
+$lowercase    = preg_match('@[a-z]@', $new_password);
+$number       = preg_match('@[0-9]@', $new_password);
+$specialChars = preg_match('@[^\w]@', $new_password); 
+
+if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($new_password) < 8) {
+    $response['message'] = 'Password must be at least 8 characters and include an uppercase letter, lowercase letter, number, and special character.';
     echo json_encode($response);
     exit;
 }
