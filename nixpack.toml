@@ -1,0 +1,17 @@
+PS C:\xampp\htdocs\PUP_tracker_system> composer install --no-dev
+Installing dependencies from lock file
+Verifying lock file contents can be installed on current platform.
+Warning: The lock file is not up to date with the latest changes in composer.json. You may be getting outdated dependencies. It is recommended that you run `composer update` or `composer update <package name>`.
+Your lock file does not contain a compatible set of packages. Please run composer update.
+
+  Problem 1
+    - phpoffice/phpspreadsheet is locked to version 4.3.1 and an update of this package was not requested.
+    - phpoffice/phpspreadsheet 4.3.1 requires ext-gd * -> it is missing from your system. Install or enable PHP's gd extension.
+  Problem 2
+    - setasign/fpdf is locked to version 1.8.6 and an update of this package wasnot requested.
+    - setasign/fpdf 1.8.6 requires ext-gd * -> it is missing from your system. Install or enable PHP's gd extension.
+
+To enable extensions, verify that they are enabled in your .ini files:
+    - C:\xampp\php\php.ini
+You can also run `php --ini` in a terminal to see which files are used by PHP inCLI mode.
+Alternatively, you can run Composer with `--ignore-platform-req=ext-gd` to temporarily ignore these required extensions.
