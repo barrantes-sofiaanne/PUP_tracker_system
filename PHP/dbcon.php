@@ -1,14 +1,23 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "Tayotomika04";
-$database = "pup_trackersys";
 
-$conn = new mysqli($servername, $username, $password, $database);
+$servername = getenv('MYSQLHOST') ?: 'localhost';
+$username   = getenv('MYSQLUSER') ?: 'root';
+$password   = getenv('MYSQLPASSWORD') ?: 'PUPTRACKER2027';
+$database   = getenv('MYSQLDATABASE') ?: 'pup_trackersys';
+$port       = getenv('MYSQLPORT') ?: 3306;
 
-if (!$conn) {
-    die("❌ Connection failed: " . mysqli_connect_error());
-} else {
-//   echo "✅ Connected to the database!";
+$conn = new mysqli(
+    $servername,
+    $username,
+    $password,
+    $database,
+    $port
+);
+
+if ($conn->connect_error) {
+    die("Database Connection Failed: " . $conn->connect_error);
 }
+
+$conn->set_charset("utf8mb4");
+
 ?>
