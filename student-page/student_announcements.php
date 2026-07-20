@@ -236,6 +236,8 @@ $announcements_result = $announcements_stmt->get_result();
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="./deepseek_chatbot.css">
+<script src="./deepseek_chatbot.js"></script>
 <script src="./student_scripts.js"></script>
 </body>
 </html>
