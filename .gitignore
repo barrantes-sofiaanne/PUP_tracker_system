@@ -1,6 +1,8 @@
 /vendor/
-/.venv/
-/.vscode/
 
 .env
+
+.vscode/
+.venv/
+
 *.log
