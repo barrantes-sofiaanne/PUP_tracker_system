@@ -1,0 +1,6 @@
+vendor
+.git
+.gitignore
+.vscode
+.venv
+node_modules
