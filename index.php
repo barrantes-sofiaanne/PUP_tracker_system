@@ -1,5 +1,5 @@
 <?php
-require_once 'maintenance/maintenance_check.php';
+//require_once 'maintenance/maintenance_check.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
