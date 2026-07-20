@@ -1,3 +1,6 @@
+<?php
+require_once 'maintenance/maintenance_check.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +16,7 @@
     <div class="container">
         <div class="login-panel">
             <img src="./assets/PUP_logo.png" alt="Logo" class="logo">
-            <h2>PUPTracker Violation System</h2>
+            <h2>PUPTr5acker Violation System</h2>
             <p>Choose your log in account to continue</p>
             
             <div class="login-buttons">
