@@ -1,7 +1,7 @@
 <?php
 session_start();
 include '../PHP/dbcon.php';
-
+require_once '../maintenance/maintenance_check.php';
 $errors = [];
 $email_display = "";
 $max_attempts = 3; 
